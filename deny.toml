@@ -1,0 +1,44 @@
+targets = [
+  { triple = "x86_64-unknown-linux-gnu" },
+  { triple = "aarch64-unknown-linux-gnu" },
+  { triple = "x86_64-unknown-linux-musl" },
+  { triple = "aarch64-apple-darwin" },
+  { triple = "x86_64-apple-darwin" },
+  { triple = "x86_64-pc-windows-msvc" },
+]
+
+[advisories]
+db-path = "~/.cargo/advisory-db"
+db-urls = ["https://github.com/rustsec/advisory-db"]
+vulnerability = "deny"
+unmaintained = "warn"
+yanked = "warn"
+notice = "warn"
+ignore = [
+  # multiple unsoundness problems with xcb
+  "RUSTSEC-2021-0019",
+  "RUSTSEC-2020-0097",
+]
+[licenses]
+unlicensed = "deny"
+allow = [
+    "MIT",
+    "Apache-2.0",
+]
+copyleft = "allow"
+allow-osi-fsf-free = "neither"
+default = "deny"
+confidence-threshold = 0.8
+
+[licenses.private]
+ignore = false
+
+[bans]
+multiple-versions = "deny"
+wildcards = "deny"
+highlight = "all"
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-git = []

@@ -1,0 +1,22 @@
+[package]
+name = "clipboard-substitutor"
+version = "0.1.0"
+authors = ["Harsh Shandilya <me@msfjarvis.dev>"]
+edition = "2021"
+description = "CLI tool to monitor clipboard changes and perform operations based on the contents"
+repository = "https://github.com/msfjarvis/clipboard-substitutor"
+homepage = "https://github.com/msfjarvis/clipboard-substitutor"
+license = "MIT/Apache-2.0"
+keywords = []
+readme = "README.md"
+
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.45"
+clipboard = "0.5.0"
+dirs = "4.0.0"
+serde = "1.0.130"
+serde_derive = "1.0.130"
+toml = "0.5.8"
