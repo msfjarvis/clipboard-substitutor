@@ -17,7 +17,8 @@ fn main() -> Result<()> {
     } else {
         Replacements::default()
     };
-    let mut clipboard: ClipboardContext = ClipboardProvider::new().expect("Failed to get clipboard");
+    let mut clipboard: ClipboardContext =
+        ClipboardProvider::new().expect("Failed to get clipboard");
     loop {
         let contents = clipboard.get_contents().expect("Failed to read clipboard");
         if let Some(subst) = config
