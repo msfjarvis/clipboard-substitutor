@@ -58,8 +58,6 @@ pub enum Action {
     Prefix { prefix: String },
     #[serde(rename = "suffix")]
     Suffix { suffix: String },
-    #[serde(rename = "remove")]
-    Remove { substring: String },
 }
 
 impl Act for Action {
@@ -68,7 +66,6 @@ impl Act for Action {
             Action::Replace { from, to } => input.replace(&from, &to),
             Action::Prefix { prefix } => format!("{}{}", prefix, input),
             Action::Suffix { suffix } => format!("{}{}", input, suffix),
-            Action::Remove { substring } => input.replace(&substring, ""),
         };
     }
 }
