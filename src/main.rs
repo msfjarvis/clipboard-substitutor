@@ -1,9 +1,10 @@
 mod config;
 
 use anyhow::{anyhow, Result};
+use clipboard::{ClipboardContext, ClipboardProvider};
 use dirs::config_dir;
 
-use crate::config::Replacements;
+use crate::config::{Act, Match, Replacements};
 
 fn main() -> Result<()> {
     let mut config_path = config_dir().ok_or(anyhow!("Failed to get config dir"))?;
@@ -16,5 +17,16 @@ fn main() -> Result<()> {
     } else {
         Replacements::default()
     };
-    Ok(())
+    let mut clipboard: ClipboardContext = ClipboardProvider::new().expect("Failed to get clipboard");
+    loop {
+        let contents = clipboard.get_contents().expect("Failed to read clipboard");
+        if let Some(subst) = config
+            .substitutors
+            .iter()
+            .find(|subst| subst.matcher.clone().check_match(&contents))
+        {
+            let result = subst.action.clone().apply_action(contents);
+            let _ = clipboard.set_contents(result);
+        };
+    }
 }
