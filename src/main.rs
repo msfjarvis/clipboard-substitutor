@@ -1,12 +1,16 @@
 mod config;
 
+use std::ops::Not;
+
 use anyhow::{anyhow, Result};
 use clipboard::{ClipboardContext, ClipboardProvider};
 use dirs::config_dir;
+use log::debug;
 
 use crate::config::{Act, Match, Replacements};
 
 fn main() -> Result<()> {
+    pretty_env_logger::init();
     let mut config_path = config_dir().ok_or(anyhow!("Failed to get config dir"))?;
     config_path.push("substitutor");
     config_path.push("config");
@@ -26,8 +30,18 @@ fn main() -> Result<()> {
             .iter()
             .find(|subst| subst.matcher.clone().check_match(&contents))
         {
+            if subst.name.is_empty().not() {
+                debug!("{}: matched on {}...", &subst.name, truncate(&contents, 40));
+            }
             let result = subst.action.clone().apply_action(contents);
             let _ = clipboard.set_contents(result);
         };
+    }
+}
+
+fn truncate(s: &str, max_chars: usize) -> &str {
+    match s.char_indices().nth(max_chars) {
+        None => s,
+        Some((idx, _)) => &s[..idx],
     }
 }
