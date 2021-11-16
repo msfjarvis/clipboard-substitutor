@@ -12,6 +12,8 @@ pub struct Replacements {
 
 #[derive(Clone, Debug, Deserialize)]
 pub struct Substitutor {
+    #[serde(default)]
+    pub name: String,
     pub matcher: Matcher,
     pub action: Action,
 }
