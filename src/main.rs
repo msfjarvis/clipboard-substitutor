@@ -5,13 +5,13 @@ use std::ops::Not;
 use anyhow::{anyhow, Result};
 use clipboard::{ClipboardContext, ClipboardProvider};
 use dirs::config_dir;
-use log::debug;
+use log::{debug, error};
 
 use crate::config::{Act, Match, Replacements};
 
 fn main() -> Result<()> {
     pretty_env_logger::init();
-    let mut config_path = config_dir().ok_or(anyhow!("Failed to get config dir"))?;
+    let mut config_path = config_dir().ok_or_else(|| anyhow!("Failed to get config dir"))?;
     config_path.push("substitutor");
     config_path.push("config");
     config_path.set_extension("toml");
@@ -34,7 +34,9 @@ fn main() -> Result<()> {
                 debug!("{}: matched on {}...", &subst.name, truncate(&contents, 40));
             }
             let result = subst.action.clone().apply_action(contents);
-            let _ = clipboard.set_contents(result);
+            if let Err(e) = clipboard.set_contents(result) {
+                error!("{}", e);
+            }
         };
     }
 }

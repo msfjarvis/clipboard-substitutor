@@ -19,11 +19,11 @@ pub struct Substitutor {
 }
 
 pub trait Match {
-    fn check_match<'a>(self: Self, string: &'a str) -> bool;
+    fn check_match(self, string: &str) -> bool;
 }
 
 pub trait Act {
-    fn apply_action(self: Self, input: String) -> String;
+    fn apply_action(self, input: String) -> String;
 }
 
 #[derive(Clone, Debug, Deserialize)]
@@ -39,16 +39,16 @@ pub enum Matcher {
 }
 
 impl Match for Matcher {
-    fn check_match<'a>(self: Self, string: &'a str) -> bool {
-        return match self {
+    fn check_match(self, string: &str) -> bool {
+        match self {
             Matcher::StartsWith { prefix } => string.starts_with(&prefix),
             Matcher::EndsWith { suffix } => string.ends_with(&suffix),
             Matcher::Contains { substring } => string.contains(&substring),
             Matcher::Regex { pattern } => {
                 let regex = Regex::from_str(&pattern).expect("Failed to parse regex");
-                regex.is_match(&string)
+                regex.is_match(string)
             }
-        };
+        }
     }
 }
 
@@ -63,7 +63,7 @@ pub enum Action {
 }
 
 impl Act for Action {
-    fn apply_action(self: Self, input: String) -> String {
+    fn apply_action(self, input: String) -> String {
         return match self {
             Action::Replace { from, to } => input.replace(&from, &to),
             Action::Prefix { prefix } => format!("{}{}", prefix, input),
