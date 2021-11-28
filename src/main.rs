@@ -17,11 +17,7 @@ fn main() -> Result<()> {
     config_path.push("config");
     config_path.set_extension("toml");
     let config_str = std::fs::read_to_string(config_path.as_path()).unwrap_or_default();
-    let config = if config_path.exists() {
-        toml::from_str(&config_str)?
-    } else {
-        Replacements::default()
-    };
+    let config: Replacements<'_> = toml::from_str(&config_str)?;
     let mut clipboard: ClipboardContext =
         ClipboardProvider::new().expect("Failed to get clipboard");
     let mut clipboard_contents = get_clipboard_contents(&mut clipboard);

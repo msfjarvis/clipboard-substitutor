@@ -3,7 +3,7 @@ use std::str::FromStr;
 use regex::Regex;
 use serde_derive::Deserialize;
 
-#[derive(Clone, Debug, Default, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub struct Replacements<'config> {
     #[serde(rename = "substitutor", borrow, default)]
     pub substitutors: Vec<Substitutor<'config>>,
