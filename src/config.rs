@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 use std::str::FromStr;
 
 use regex::Regex;
