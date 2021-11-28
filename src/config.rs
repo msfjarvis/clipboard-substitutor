@@ -17,14 +17,6 @@ pub struct Substitutor {
     pub action: Action,
 }
 
-pub trait Match {
-    fn check_match(self, string: &str) -> bool;
-}
-
-pub trait Act {
-    fn apply_action(self, input: String) -> String;
-}
-
 #[derive(Clone, Debug, Deserialize)]
 pub enum Matcher {
     #[serde(rename = "starts_with")]
@@ -35,6 +27,24 @@ pub enum Matcher {
     Contains { substring: String },
     #[serde(rename = "regex")]
     Regex { pattern: String },
+}
+
+#[derive(Clone, Debug, Deserialize)]
+pub enum Action {
+    #[serde(rename = "replace")]
+    Replace { from: String, to: String },
+    #[serde(rename = "prefix")]
+    Prefix { prefix: String },
+    #[serde(rename = "suffix")]
+    Suffix { suffix: String },
+}
+
+pub trait Match {
+    fn check_match(self, string: &str) -> bool;
+}
+
+pub trait Act {
+    fn apply_action(self, input: String) -> String;
 }
 
 impl Match for Matcher {
@@ -49,16 +59,6 @@ impl Match for Matcher {
             }
         }
     }
-}
-
-#[derive(Clone, Debug, Deserialize)]
-pub enum Action {
-    #[serde(rename = "replace")]
-    Replace { from: String, to: String },
-    #[serde(rename = "prefix")]
-    Prefix { prefix: String },
-    #[serde(rename = "suffix")]
-    Suffix { suffix: String },
 }
 
 impl Act for Action {
