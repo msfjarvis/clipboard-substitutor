@@ -1,6 +1,7 @@
 mod config;
 
-use std::ops::Not;
+use std::error::Error;
+use std::ops::{Deref, Not};
 
 use anyhow::{anyhow, Result};
 use clipboard::{ClipboardContext, ClipboardProvider};
@@ -15,16 +16,16 @@ fn main() -> Result<()> {
     config_path.push("substitutor");
     config_path.push("config");
     config_path.set_extension("toml");
-    let config: Replacements = if config_path.exists() {
-        let config_str = std::fs::read_to_string(config_path.as_path())?;
+    let config_str = std::fs::read_to_string(config_path.as_path()).unwrap_or_default();
+    let config = if config_path.exists() {
         toml::from_str(&config_str)?
     } else {
         Replacements::default()
     };
     let mut clipboard: ClipboardContext =
         ClipboardProvider::new().expect("Failed to get clipboard");
-    loop {
-        let contents = clipboard.get_contents().expect("Failed to read clipboard");
+    let mut clipboard_contents = get_clipboard_contents(&mut clipboard);
+    while let Ok(contents) = clipboard_contents.as_deref() {
         if let Some(subst) = config
             .substitutors
             .iter()
@@ -33,12 +34,23 @@ fn main() -> Result<()> {
             if subst.name.is_empty().not() {
                 debug!("{}: matched on {}...", &subst.name, truncate(&contents, 40));
             }
-            let result = subst.action.clone().apply_action(contents);
-            if let Err(e) = clipboard.set_contents(result) {
+            let result = subst.action.clone().apply_action(contents.deref());
+            if let Err(e) = clipboard.set_contents(result.to_owned()) {
                 error!("{}", e);
             }
         };
+        while let Ok(new_contents) = get_clipboard_contents(&mut clipboard) {
+            if new_contents != contents {
+                clipboard_contents = Ok(new_contents);
+                break;
+            };
+        }
     }
+    return Ok(());
+}
+
+fn get_clipboard_contents(clipboard: &mut ClipboardContext) -> Result<String, Box<dyn Error>> {
+    clipboard.get_contents()
 }
 
 fn truncate(s: &str, max_chars: usize) -> &str {

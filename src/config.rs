@@ -4,39 +4,41 @@ use regex::Regex;
 use serde_derive::Deserialize;
 
 #[derive(Clone, Debug, Default, Deserialize)]
-pub struct Replacements {
-    #[serde(rename = "substitutor")]
-    pub substitutors: Vec<Substitutor>,
+pub struct Replacements<'config> {
+    #[serde(rename = "substitutor", borrow, default)]
+    pub substitutors: Vec<Substitutor<'config>>,
 }
 
 #[derive(Clone, Debug, Deserialize)]
-pub struct Substitutor {
+pub struct Substitutor<'config> {
     #[serde(default)]
-    pub name: String,
-    pub matcher: Matcher,
-    pub action: Action,
+    pub name: &'config str,
+    #[serde(borrow)]
+    pub matcher: Matcher<'config>,
+    #[serde(borrow)]
+    pub action: Action<'config>,
 }
 
 #[derive(Clone, Debug, Deserialize)]
-pub enum Matcher {
+pub enum Matcher<'config> {
     #[serde(rename = "starts_with")]
-    StartsWith { prefix: String },
+    StartsWith { prefix: &'config str },
     #[serde(rename = "ends_with")]
-    EndsWith { suffix: String },
+    EndsWith { suffix: &'config str },
     #[serde(rename = "contains")]
-    Contains { substring: String },
+    Contains { substring: &'config str },
     #[serde(rename = "regex")]
-    Regex { pattern: String },
+    Regex { pattern: &'config str },
 }
 
 #[derive(Clone, Debug, Deserialize)]
-pub enum Action {
+pub enum Action<'config> {
     #[serde(rename = "replace")]
-    Replace { from: String, to: String },
+    Replace { from: &'config str, to: &'config str },
     #[serde(rename = "prefix")]
-    Prefix { prefix: String },
+    Prefix { prefix: &'config str },
     #[serde(rename = "suffix")]
-    Suffix { suffix: String },
+    Suffix { suffix: &'config str },
 }
 
 pub trait Match {
@@ -44,27 +46,27 @@ pub trait Match {
 }
 
 pub trait Act {
-    fn apply_action(self, input: String) -> String;
+    fn apply_action(self, input: &str) -> String;
 }
 
-impl Match for Matcher {
+impl Match for Matcher<'_> {
     fn check_match(self, string: &str) -> bool {
         match self {
             Matcher::StartsWith { prefix } => string.starts_with(&prefix),
             Matcher::EndsWith { suffix } => string.ends_with(&suffix),
             Matcher::Contains { substring } => string.contains(&substring),
             Matcher::Regex { pattern } => {
-                let regex = Regex::from_str(&pattern).expect("Failed to parse regex");
+                let regex = Regex::from_str(pattern).expect("Failed to parse regex");
                 regex.is_match(string)
             }
         }
     }
 }
 
-impl Act for Action {
-    fn apply_action(self, input: String) -> String {
+impl Act for Action<'_> {
+    fn apply_action(self, input: &str) -> String {
         return match self {
-            Action::Replace { from, to } => input.replace(&from, &to),
+            Action::Replace { from, to } => input.replace(from, to),
             Action::Prefix { prefix } => format!("{}{}", prefix, input),
             Action::Suffix { suffix } => format!("{}{}", input, suffix),
         };
