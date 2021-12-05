@@ -34,7 +34,10 @@ pub enum Matcher<'config> {
 #[derive(Clone, Debug, Deserialize)]
 pub enum Action<'config> {
     #[serde(rename = "replace")]
-    Replace { from: &'config str, to: &'config str },
+    Replace {
+        from: &'config str,
+        to: &'config str,
+    },
     #[serde(rename = "prefix")]
     Prefix { prefix: &'config str },
     #[serde(rename = "suffix")]
