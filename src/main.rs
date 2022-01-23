@@ -2,6 +2,7 @@ mod config;
 
 use std::error::Error;
 use std::ops::{Deref, Not};
+use std::path::PathBuf;
 
 use anyhow::{anyhow, Result};
 use clipboard::{ClipboardContext, ClipboardProvider};
@@ -12,14 +13,19 @@ use crate::config::{Act, Match, Replacements};
 
 fn main() -> Result<()> {
     pretty_env_logger::init();
-    let mut config_path = config_dir().ok_or_else(|| anyhow!("Failed to get config dir"))?;
-    config_path.push("substitutor");
-    config_path.push("config");
-    config_path.set_extension("toml");
+    let config_path = get_config_path()?;
     let config_str = std::fs::read_to_string(config_path.as_path()).unwrap_or_default();
     let config: Replacements<'_> = toml::from_str(&config_str)?;
     loop_clipboard(config);
     return Ok(());
+}
+
+fn get_config_path() -> Result<PathBuf> {
+    let mut config_path = config_dir().ok_or_else(|| anyhow!("Failed to get config dir"))?;
+    config_path.push("substitutor");
+    config_path.push("config");
+    config_path.set_extension("toml");
+    return Ok(config_path);
 }
 
 fn loop_clipboard<'a>(config: Replacements<'a>) {
