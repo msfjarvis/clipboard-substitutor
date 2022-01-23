@@ -16,8 +16,30 @@ fn main() -> Result<()> {
     let config_path = get_config_path()?;
     let config_str = std::fs::read_to_string(config_path.as_path()).unwrap_or_default();
     let config: Replacements<'_> = toml::from_str(&config_str)?;
+    if check_args() {
+        return Ok(());
+    }
     loop_clipboard(config);
     return Ok(());
+}
+
+fn check_args() -> bool {
+    let args: Vec<String> = std::env::args().collect();
+    let version_args = vec!["version", "-v", "--version"];
+    for arg in args {
+        if version_args.contains(&arg.deref()) {
+            print_version();
+            return true;
+        }
+    }
+    return false;
+}
+
+fn print_version() {
+    println!(
+        "{}",
+        concat!(env!("CARGO_PKG_NAME"), " ", env!("CARGO_PKG_VERSION"))
+    );
 }
 
 fn get_config_path() -> Result<PathBuf> {
