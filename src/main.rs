@@ -32,7 +32,7 @@ fn main() -> Result<()> {
             }
             let result = subst.action.clone().apply_action(contents.deref());
             if let Err(e) = clipboard.set_contents(result.to_owned()) {
-                error!("{}", e);
+                error!("{e}");
             }
         };
         while let Ok(new_contents) = get_clipboard_contents(&mut clipboard) {
