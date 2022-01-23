@@ -18,6 +18,11 @@ fn main() -> Result<()> {
     config_path.set_extension("toml");
     let config_str = std::fs::read_to_string(config_path.as_path()).unwrap_or_default();
     let config: Replacements<'_> = toml::from_str(&config_str)?;
+    loop_clipboard(config);
+    return Ok(());
+}
+
+fn loop_clipboard<'a>(config: Replacements<'a>) {
     let mut clipboard: ClipboardContext =
         ClipboardProvider::new().expect("Failed to get clipboard");
     let mut clipboard_contents = get_clipboard_contents(&mut clipboard);
@@ -42,7 +47,6 @@ fn main() -> Result<()> {
             };
         }
     }
-    return Ok(());
 }
 
 fn get_clipboard_contents(clipboard: &mut ClipboardContext) -> Result<String, Box<dyn Error>> {
