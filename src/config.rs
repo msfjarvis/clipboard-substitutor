@@ -29,10 +29,14 @@ pub enum Matcher<'config> {
     Contains { substring: &'config str },
     #[serde(rename = "regex")]
     Regex { pattern: &'config str },
+    #[serde(rename = "exactly")]
+    Exactly { content: &'config str },
 }
 
 #[derive(Clone, Debug, Deserialize)]
 pub enum Action<'config> {
+    #[serde(rename = "set")]
+    Set { content: &'config str },
     #[serde(rename = "replace")]
     Replace {
         from: &'config str,
@@ -62,6 +66,7 @@ impl Match for Matcher<'_> {
                 let regex = Regex::from_str(pattern).expect("Failed to parse regex");
                 regex.is_match(string)
             }
+            Matcher::Exactly { content } => string == content,
         }
     }
 }
@@ -72,6 +77,7 @@ impl Act for Action<'_> {
             Action::Replace { from, to } => input.replace(from, to),
             Action::Prefix { prefix } => format!("{}{}", prefix, input),
             Action::Suffix { suffix } => format!("{}{}", input, suffix),
+            Action::Set { content } => content.to_owned(),
         };
     }
 }
