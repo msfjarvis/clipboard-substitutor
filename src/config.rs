@@ -49,19 +49,19 @@ pub enum Action<'config> {
 }
 
 pub trait Match {
-    fn check_match(self, string: &str) -> bool;
+    fn check_match(&self, string: &str) -> bool;
 }
 
 pub trait Act {
-    fn apply_action(self, input: &str) -> String;
+    fn apply_action(&self, input: &str) -> String;
 }
 
 impl Match for Matcher<'_> {
-    fn check_match(self, string: &str) -> bool {
+    fn check_match(&self, string: &str) -> bool {
         match self {
-            Matcher::StartsWith { prefix } => string.starts_with(&prefix),
-            Matcher::EndsWith { suffix } => string.ends_with(&suffix),
-            Matcher::Contains { substring } => string.contains(&substring),
+            Matcher::StartsWith { prefix } => string.starts_with(prefix),
+            Matcher::EndsWith { suffix } => string.ends_with(suffix),
+            Matcher::Contains { substring } => string.contains(substring),
             Matcher::Regex { pattern } => {
                 return if let Ok(regex) = Regex::from_str(pattern) {
                     regex.is_match(string)
@@ -69,18 +69,18 @@ impl Match for Matcher<'_> {
                     false
                 }
             }
-            Matcher::Exactly { content } => string == content,
+            Matcher::Exactly { content } => &string == content,
         }
     }
 }
 
 impl Act for Action<'_> {
-    fn apply_action(self, input: &str) -> String {
+    fn apply_action(&self, input: &str) -> String {
         return match self {
             Action::Replace { from, to } => input.replace(from, to),
             Action::Prefix { prefix } => format!("{prefix}{input}"),
             Action::Suffix { suffix } => format!("{input}{suffix}"),
-            Action::Set { content } => content.to_owned(),
+            Action::Set { content } => content.to_owned().to_owned(),
         };
     }
 }
