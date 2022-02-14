@@ -63,8 +63,11 @@ impl Match for Matcher<'_> {
             Matcher::EndsWith { suffix } => string.ends_with(&suffix),
             Matcher::Contains { substring } => string.contains(&substring),
             Matcher::Regex { pattern } => {
-                let regex = Regex::from_str(pattern).expect("Failed to parse regex");
-                regex.is_match(string)
+                return if let Ok(regex) = Regex::from_str(pattern) {
+                    regex.is_match(string)
+                } else {
+                    false
+                }
             }
             Matcher::Exactly { content } => string == content,
         }
