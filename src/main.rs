@@ -1,4 +1,6 @@
 mod config;
+#[cfg(test)]
+mod test;
 
 use std::error::Error;
 use std::ops::{Deref, Not};
