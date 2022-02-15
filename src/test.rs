@@ -1,6 +1,7 @@
 use crate::config::{Act, Action, Match, Matcher};
+use assay::assay;
 
-#[test]
+#[assay]
 fn regex_matcher() {
     let matcher = Matcher::Regex {
         pattern: "^https.*",
@@ -9,13 +10,13 @@ fn regex_matcher() {
     assert!(!matcher.check_match("example.com"));
 }
 
-#[test]
+#[assay]
 fn set_action() {
     let action = Action::Set { content: "doe" };
     assert_eq!("doe", action.apply_action("john"));
 }
 
-#[test]
+#[assay]
 fn replace_action() {
     let action = Action::Replace {
         from: "doe",
@@ -24,13 +25,13 @@ fn replace_action() {
     assert_eq!("john bow", action.apply_action("john doe"));
 }
 
-#[test]
+#[assay]
 fn prefix_action() {
     let action = Action::Prefix { prefix: "hello " };
     assert_eq!("hello john", action.apply_action("john"));
 }
 
-#[test]
+#[assay]
 fn suffix_action() {
     let action = Action::Suffix { suffix: " doe" };
     assert_eq!("john doe", action.apply_action("john"));
