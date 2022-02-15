@@ -11,3 +11,5 @@ name: Check Rust code
 jobs:
   check:
     uses: msfjarvis/shared-workflows/.github/workflows/test-rust-project.yml@main
+    with:
+      apt_packages: libxcb-xfixes0-dev libxcb-shape0-dev
