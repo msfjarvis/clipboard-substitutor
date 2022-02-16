@@ -18,14 +18,13 @@ fn main() -> Result<()> {
     let config_path = get_config_path()?;
     let config_str = std::fs::read_to_string(config_path.as_path()).unwrap_or_default();
     let config: Replacements<'_> = toml::from_str(&config_str)?;
-    if check_args() {
-        return Ok(());
+    if !check_for_version_arg() {
+        loop_clipboard(config);
     }
-    loop_clipboard(config);
     return Ok(());
 }
 
-fn check_args() -> bool {
+fn check_for_version_arg() -> bool {
     let args: Vec<String> = std::env::args().collect();
     let version_args = vec!["version", "-v", "--version"];
     for arg in args {
