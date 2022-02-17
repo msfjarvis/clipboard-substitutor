@@ -59,12 +59,12 @@ fn loop_clipboard<'a>(config: Replacements<'a>) {
         if let Some(subst) = config
             .substitutors
             .iter()
-            .find(|subst| subst.matcher.clone().check_match(&contents))
+            .find(|subst| subst.matcher.check_match(contents))
         {
             if subst.name.is_empty().not() {
                 debug!("{}: matched on {}...", &subst.name, truncate(&contents, 40));
             }
-            let result = subst.action.clone().apply_action(contents.deref());
+            let result = subst.action.apply_action(contents);
             if let Err(e) = clipboard.set_contents(result.to_owned()) {
                 error!("{e}");
             }
