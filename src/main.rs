@@ -13,6 +13,8 @@ use log::{debug, error};
 
 use crate::config::{Act, Match, Replacements};
 
+const VERSION_ARGS: [&str; 3] = ["version", "-v", "--version"];
+
 fn main() -> Result<()> {
     pretty_env_logger::init();
     let config_path = get_config_path()?;
@@ -26,9 +28,8 @@ fn main() -> Result<()> {
 
 fn check_for_version_arg() -> bool {
     let args: Vec<String> = std::env::args().collect();
-    let version_args = vec!["version", "-v", "--version"];
     for arg in args {
-        if version_args.contains(&arg.deref()) {
+        if VERSION_ARGS.contains(&arg.deref()) {
             print_version();
             return true;
         }
