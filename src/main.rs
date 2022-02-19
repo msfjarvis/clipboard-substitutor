@@ -11,7 +11,7 @@ use clipboard::{ClipboardContext, ClipboardProvider};
 use dirs::config_dir;
 use log::{debug, error};
 
-use crate::config::{Act, Match, Replacements};
+use crate::config::{Act, Match, MatcherType, Replacements};
 
 const VERSION_ARGS: [&str; 3] = ["version", "-v", "--version"];
 
@@ -57,11 +57,14 @@ fn loop_clipboard<'a>(config: Replacements<'a>) {
         ClipboardProvider::new().expect("Failed to get clipboard");
     let mut clipboard_contents = get_clipboard_contents(&mut clipboard);
     while let Ok(contents) = clipboard_contents.as_deref() {
-        if let Some(subst) = config
-            .substitutors
-            .iter()
-            .find(|subst| subst.matcher.check_match(contents))
-        {
+        if let Some(subst) = config.substitutors.iter().find(|subst| {
+            return match &subst.matcher_type {
+                MatcherType::Single(matcher) => matcher.check_match(contents),
+                MatcherType::Multiple(matchers) => {
+                    matchers.iter().all(|matcher| matcher.check_match(contents))
+                }
+            };
+        }) {
             if subst.name.is_empty().not() {
                 debug!("{}: matched on {}...", &subst.name, truncate(&contents, 40));
             }

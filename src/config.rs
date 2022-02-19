@@ -13,10 +13,19 @@ pub struct Replacements<'config> {
 pub struct Substitutor<'config> {
     #[serde(default)]
     pub name: &'config str,
-    #[serde(borrow)]
-    pub matcher: Matcher<'config>,
+    #[serde(borrow, alias = "matcher")]
+    pub matcher_type: MatcherType<'config>,
     #[serde(borrow)]
     pub action: Action<'config>,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(untagged)]
+pub enum MatcherType<'config> {
+    #[serde(borrow)]
+    Single(Matcher<'config>),
+    #[serde(borrow)]
+    Multiple(Vec<Matcher<'config>>),
 }
 
 #[derive(Debug, Deserialize)]
