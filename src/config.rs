@@ -3,13 +3,13 @@ use std::str::FromStr;
 use regex::Regex;
 use serde_derive::Deserialize;
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Debug, Deserialize)]
 pub struct Replacements<'config> {
     #[serde(rename = "substitutor", borrow, default)]
     pub substitutors: Vec<Substitutor<'config>>,
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Debug, Deserialize)]
 pub struct Substitutor<'config> {
     #[serde(default)]
     pub name: &'config str,
@@ -19,7 +19,7 @@ pub struct Substitutor<'config> {
     pub action: Action<'config>,
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Debug, Deserialize)]
 pub enum Matcher<'config> {
     #[serde(rename = "starts_with")]
     StartsWith { prefix: &'config str },
@@ -33,7 +33,7 @@ pub enum Matcher<'config> {
     Exactly { content: &'config str },
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Debug, Deserialize)]
 pub enum Action<'config> {
     #[serde(rename = "set")]
     Set { content: &'config str },
