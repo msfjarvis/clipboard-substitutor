@@ -14,7 +14,7 @@ pub struct Substitutor<'config> {
     #[serde(default)]
     pub name: &'config str,
     #[serde(borrow, alias = "matcher")]
-    pub matcher_type: MatcherType<'config>,
+    pub matcher: MatcherType<'config>,
     #[serde(borrow)]
     pub action: Action<'config>,
 }

@@ -52,7 +52,7 @@ fn parse_with_multiple_matchers() {
     assert_eq!(1, config.substitutors.len());
     let subst = &config.substitutors[0];
     assert_eq!("Example", subst.name);
-    assert!(matches!(subst.matcher_type, MatcherType::Multiple(_)));
+    assert!(matches!(subst.matcher, MatcherType::Multiple(_)));
     assert!(matches!(subst.action, Action::Prefix { .. }));
 }
 
@@ -68,6 +68,6 @@ fn parse_with_single_matcher() {
     assert_eq!(1, config.substitutors.len());
     let subst = &config.substitutors[0];
     assert_eq!("Example", subst.name);
-    assert!(matches!(subst.matcher_type, MatcherType::Single(_)));
+    assert!(matches!(subst.matcher, MatcherType::Single(_)));
     assert!(matches!(subst.action, Action::Prefix { .. }));
 }

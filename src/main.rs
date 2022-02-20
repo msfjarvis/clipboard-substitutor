@@ -58,7 +58,7 @@ fn loop_clipboard<'a>(config: Replacements<'a>) {
     let mut clipboard_contents = get_clipboard_contents(&mut clipboard);
     while let Ok(contents) = clipboard_contents.as_deref() {
         if let Some(subst) = config.substitutors.iter().find(|subst| {
-            return match &subst.matcher_type {
+            return match &subst.matcher {
                 MatcherType::Single(matcher) => matcher.check_match(contents),
                 MatcherType::Multiple(matchers) => {
                     matchers.iter().all(|matcher| matcher.check_match(contents))
