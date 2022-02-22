@@ -83,6 +83,15 @@ impl Match for Matcher<'_> {
     }
 }
 
+impl Match for MatcherType<'_> {
+    fn check_match(&self, string: &str) -> bool {
+        match self {
+            Self::Single(matcher) => matcher.check_match(string),
+            Self::Multiple(matchers) => matchers.iter().all(|matcher| matcher.check_match(string)),
+        }
+    }
+}
+
 impl Act for Action<'_> {
     fn apply_action(&self, input: &str) -> String {
         return match self {
