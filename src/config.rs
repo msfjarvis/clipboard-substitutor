@@ -86,8 +86,10 @@ impl Match for Matcher<'_> {
 impl Match for MatcherType<'_> {
     fn check_match(&self, string: &str) -> bool {
         match self {
-            Self::Single(matcher) => matcher.check_match(string),
-            Self::Multiple(matchers) => matchers.iter().all(|matcher| matcher.check_match(string)),
+            MatcherType::Single(matcher) => matcher.check_match(string),
+            MatcherType::Multiple(matchers) => {
+                matchers.iter().all(|matcher| matcher.check_match(string))
+            }
         }
     }
 }
