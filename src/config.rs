@@ -72,7 +72,7 @@ impl Match for Matcher<'_> {
             Matcher::EndsWith { suffix } => string.ends_with(suffix),
             Matcher::Contains { substring } => string.contains(substring),
             Matcher::Regex { pattern } => {
-                return if let Ok(regex) = Regex::from_str(pattern) {
+                if let Ok(regex) = Regex::from_str(pattern) {
                     regex.is_match(string)
                 } else {
                     false

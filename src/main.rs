@@ -23,7 +23,7 @@ fn main() -> Result<()> {
     if !check_for_version_arg() {
         loop_clipboard(config);
     }
-    return Ok(());
+    Ok(())
 }
 
 fn check_for_version_arg() -> bool {
@@ -34,7 +34,7 @@ fn check_for_version_arg() -> bool {
             return true;
         }
     }
-    return false;
+    false
 }
 
 fn print_version() {
@@ -49,10 +49,10 @@ fn get_config_path() -> Result<PathBuf> {
     config_path.push("substitutor");
     config_path.push("config");
     config_path.set_extension("toml");
-    return Ok(config_path);
+    Ok(config_path)
 }
 
-fn loop_clipboard<'a>(config: Replacements<'a>) {
+fn loop_clipboard(config: Replacements) {
     let mut clipboard: ClipboardContext =
         ClipboardProvider::new().expect("Failed to get clipboard");
     let mut clipboard_contents = get_clipboard_contents(&mut clipboard);
@@ -63,7 +63,7 @@ fn loop_clipboard<'a>(config: Replacements<'a>) {
             .find(|subst| subst.matcher.check_match(contents))
         {
             if subst.name.is_empty().not() {
-                debug!("{}: matched on {}...", &subst.name, truncate(&contents, 40));
+                debug!("{}: matched on {}...", &subst.name, truncate(contents, 40));
             }
             let result = subst.action.apply_action(contents);
             if let Err(e) = clipboard.set_contents(result.to_owned()) {
