@@ -19,7 +19,6 @@ fn main() -> Result<()> {
     if check_for_version_arg() {
         return Ok(());
     }
-    pretty_env_logger::init();
     let config_path = get_config_path()?;
     let config_str = std::fs::read_to_string(config_path.as_path()).unwrap_or_default();
     let config: Replacements<'_> = toml::from_str(&config_str)?;
