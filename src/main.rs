@@ -9,7 +9,8 @@ use std::path::PathBuf;
 use anyhow::{anyhow, Result};
 use clipboard::{ClipboardContext, ClipboardProvider};
 use dirs::config_dir;
-use log::{debug, error};
+use tracing::{debug, error, Level};
+use tracing_subscriber::FmtSubscriber;
 
 use crate::config::{Act, Match, Replacements};
 
@@ -19,6 +20,7 @@ fn main() -> Result<()> {
     if check_for_version_arg() {
         return Ok(());
     }
+    configure_tracing();
     let config_path = get_config_path()?;
     let config_str = std::fs::read_to_string(config_path.as_path()).unwrap_or_default();
     let config: Replacements<'_> = toml::from_str(&config_str)?;
@@ -42,6 +44,14 @@ fn print_version() {
         "{}",
         concat!(env!("CARGO_PKG_NAME"), " ", env!("CARGO_PKG_VERSION"))
     );
+}
+
+fn configure_tracing() {
+    let subscriber = FmtSubscriber::builder()
+        .with_max_level(Level::TRACE)
+        .finish();
+
+    tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
 }
 
 fn get_config_path() -> Result<PathBuf> {
