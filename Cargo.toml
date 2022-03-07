@@ -12,7 +12,7 @@ readme = "README.md"
 include = ["src/**/*", "LICENSE-*", "README.md"]
 
 [dependencies]
-anyhow = "1.0.55"
+anyhow = "1.0.56"
 clipboard = "0.5.0"
 dirs = "4.0.0"
 regex = "1.5.4"
