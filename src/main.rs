@@ -10,6 +10,8 @@ use anyhow::{anyhow, Result};
 use clipboard::{ClipboardContext, ClipboardProvider};
 use dirs::config_dir;
 use tracing::{debug, error, Level};
+#[cfg(journald)]
+use tracing_journald::Subscriber;
 use tracing_subscriber::FmtSubscriber;
 
 use crate::config::{Act, Match, Replacements};
@@ -47,6 +49,7 @@ fn print_version() {
   );
 }
 
+#[cfg(not(journald))]
 fn configure_tracing() {
   let subscriber = FmtSubscriber::builder()
     .with_max_level(Level::TRACE)
@@ -54,6 +57,13 @@ fn configure_tracing() {
 
   tracing::subscriber::set_global_default(subscriber)
     .expect("setting default subscriber failed");
+}
+
+#[cfg(journald)]
+fn configure_tracing() {
+  let sub = Registry::default()
+    .with(Subscriber::new().unwrap().with_field_prefix(None));
+  tracing::collect::with_default(sub, f);
 }
 
 fn get_config_path() -> Result<PathBuf> {

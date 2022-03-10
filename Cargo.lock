@@ -93,6 +93,7 @@ dependencies = [
  "serde_derive",
  "toml",
  "tracing",
+ "tracing-journald",
  "tracing-subscriber",
 ]
 
@@ -508,6 +509,17 @@ checksum = "03cfcb51380632a72d3111cb8d3447a8d908e577d31beeac006f836383d29a23"
 dependencies = [
  "lazy_static",
  "valuable",
+]
+
+[[package]]
+name = "tracing-journald"
+version = "0.2.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "36a63bcca9cab23195673d7c3c7db8aff5fc062b82cd1e51c396d9dc26968c3c"
+dependencies = [
+ "libc",
+ "tracing-core",
+ "tracing-subscriber",
 ]
 
 [[package]]
