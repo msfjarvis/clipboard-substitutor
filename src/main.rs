@@ -9,10 +9,7 @@ use std::path::PathBuf;
 use anyhow::{anyhow, Result};
 use clipboard::{ClipboardContext, ClipboardProvider};
 use dirs::config_dir;
-use tracing::{debug, error, Level};
-#[cfg(journald)]
-use tracing_journald::Subscriber;
-use tracing_subscriber::FmtSubscriber;
+use tracing::{debug, error};
 
 use crate::config::{Act, Match, Replacements};
 
@@ -49,8 +46,11 @@ fn print_version() {
   );
 }
 
-#[cfg(not(journald))]
+#[cfg(not(feature = "journald"))]
 fn configure_tracing() {
+  use tracing_subscriber::FmtSubscriber;
+  use tracing::Level;
+
   let subscriber = FmtSubscriber::builder()
     .with_max_level(Level::TRACE)
     .finish();
@@ -59,11 +59,16 @@ fn configure_tracing() {
     .expect("setting default subscriber failed");
 }
 
-#[cfg(journald)]
+#[cfg(feature = "journald")]
 fn configure_tracing() {
-  let sub = Registry::default()
-    .with(Subscriber::new().unwrap().with_field_prefix(None));
-  tracing::collect::with_default(sub, f);
+  use tracing_journald::Layer;
+  use tracing_subscriber::layer::SubscriberExt;
+  use tracing_subscriber::Registry;
+
+  let subscriber =
+    Registry::default().with(Layer::new().unwrap().with_field_prefix(None));
+  tracing::subscriber::set_global_default(subscriber)
+    .expect("setting default subscriber failed");
 }
 
 fn get_config_path() -> Result<PathBuf> {
