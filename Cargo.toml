@@ -20,7 +20,7 @@ serde = "1.0.136"
 serde_derive = "1.0.136"
 toml = "0.5.8"
 tracing = "0.1.32"
-tracing-journald = { version = "0.2.3", optional = true }
+tracing-journald = { version = "0.2.4", optional = true }
 tracing-subscriber = { version = "0.3.9", features = ["env-filter"] }
 
 [dev-dependencies]
