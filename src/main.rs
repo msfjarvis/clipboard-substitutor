@@ -48,8 +48,8 @@ fn print_version() {
 
 #[cfg(not(feature = "journald"))]
 fn configure_tracing() {
-  use tracing_subscriber::FmtSubscriber;
   use tracing::Level;
+  use tracing_subscriber::FmtSubscriber;
 
   let subscriber = FmtSubscriber::builder()
     .with_max_level(Level::TRACE)
