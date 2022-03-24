@@ -24,7 +24,7 @@ tracing-journald = { version = "0.2.4", optional = true }
 tracing-subscriber = { version = "0.3.9", features = ["env-filter"] }
 
 [dev-dependencies]
-assay = "0.1.1"
+assay = { git = "https://github.com/mgattozzi/assay", rev = "ff4afc5f15d8241efe626f58c69492b964863e0e", default-features = false }
 
 [features]
 journald = ["tracing-journald"]
