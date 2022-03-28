@@ -80,7 +80,7 @@ fn get_config_path() -> Result<PathBuf> {
   Ok(config_path)
 }
 
-fn loop_clipboard(config: Replacements) {
+fn loop_clipboard(config: Replacements<'_>) {
   let mut clipboard: ClipboardContext =
     ClipboardProvider::new().expect("Failed to get clipboard");
   let mut clipboard_contents = get_clipboard_contents(&mut clipboard);
