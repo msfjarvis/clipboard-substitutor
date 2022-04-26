@@ -13,7 +13,8 @@ include = ["src/**/*", "LICENSE-*", "README.md"]
 
 [dependencies]
 anyhow = "1.0.57"
-clipboard = "0.5.0"
+clipboard-master = "3.1.3"
+copypasta = { version = "0.7.1", default-features = false, features = ["x11"] }
 dirs = "4.0.0"
 regex = "1.5.5"
 serde = "1.0.136"

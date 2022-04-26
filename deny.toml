@@ -29,6 +29,9 @@ copyleft = "allow"
 allow-osi-fsf-free = "neither"
 default = "deny"
 confidence-threshold = 0.8
+exceptions = [
+  { allow = ["BSL-1.0"], name = "lazy-bytes-cast", version = ">=5.0.1" },
+]
 
 [licenses.private]
 ignore = false
