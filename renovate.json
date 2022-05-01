@@ -7,6 +7,10 @@
       "matchPackagePatterns": ["*"],
       "automerge": true,
       "automergeType": "branch"
+    },
+    {
+      "matchPackagePatterns": ["serde", "serde_derive"],
+      "groupName": "serde"
     }
   ]
 }
