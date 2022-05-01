@@ -27,6 +27,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "08f9b8508dccb7687a1d6c4ce66b2b0ecef467c94667de27d8d7fe1f8d2a9cdc"
 
 [[package]]
+name = "argv"
+version = "0.1.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "593b6306f88ed573d52d5d07e309317f1c5e95777bf559b2ddb33f50b7d1158d"
+
+[[package]]
 name = "assay"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -86,6 +92,7 @@ name = "clipboard-substitutor"
 version = "0.5.0"
 dependencies = [
  "anyhow",
+ "argv",
  "assay",
  "clipboard-master",
  "copypasta",

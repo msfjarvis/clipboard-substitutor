@@ -3,7 +3,6 @@ mod config;
 #[cfg(test)]
 mod test;
 
-use std::ops::Deref;
 use std::path::PathBuf;
 
 use anyhow::{anyhow, Result};
@@ -11,8 +10,6 @@ use dirs::config_dir;
 
 use crate::clipboard::monitor_clipboard;
 use crate::config::Replacements;
-
-const VERSION_ARGS: [&str; 3] = ["version", "-v", "--version"];
 
 fn main() -> Result<()> {
   if check_for_version_arg() {
@@ -28,9 +25,8 @@ fn main() -> Result<()> {
 }
 
 fn check_for_version_arg() -> bool {
-  let args: Vec<String> = std::env::args().collect();
-  for arg in args {
-    if VERSION_ARGS.contains(&arg.deref()) {
+  for arg in argv::iter() {
+    if arg == "-v" || arg == "version" || arg == "--version" {
       print_version();
       return true;
     }
