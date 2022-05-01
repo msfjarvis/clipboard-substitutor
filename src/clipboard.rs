@@ -25,7 +25,7 @@ impl<'a> ClipboardHandler for Handler<'a> {
           debug!("{}: matched on {}...", &subst.name, truncate(&contents, 40));
         }
         let result = subst.action.apply_action(&contents);
-        if let Err(e) = self.ctx.set_contents(result.to_owned()) {
+        if let Err(e) = self.ctx.set_contents(result) {
           error!("{e}");
         }
       };
@@ -46,7 +46,7 @@ fn truncate(s: &str, max_chars: usize) -> &str {
   }
 }
 
-pub fn monitor_clipboard<'a>(config: Replacements<'a>) {
+pub fn monitor_clipboard<'a>(config: Replacements<'_>) {
   let ctx = ClipboardContext::new().expect("Failed to acquire clipboard");
   let handler = Handler { ctx, config };
   let _ = Master::new(handler).run();
