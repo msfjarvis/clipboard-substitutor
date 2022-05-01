@@ -8,7 +8,7 @@ use std::path::PathBuf;
 use anyhow::{anyhow, Result};
 use dirs::config_dir;
 
-use crate::clipboard::monitor_clipboard;
+use crate::clipboard::monitor;
 use crate::config::Replacements;
 
 fn main() -> Result<()> {
@@ -20,7 +20,7 @@ fn main() -> Result<()> {
   let config_str =
     std::fs::read_to_string(config_path.as_path()).unwrap_or_default();
   let config: Replacements<'_> = toml::from_str(&config_str)?;
-  monitor_clipboard(config);
+  monitor(config);
   Ok(())
 }
 

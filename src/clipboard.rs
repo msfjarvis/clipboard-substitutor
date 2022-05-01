@@ -46,8 +46,8 @@ fn truncate(s: &str, max_chars: usize) -> &str {
   }
 }
 
-pub fn monitor_clipboard<'a>(config: Replacements<'_>) {
+pub fn monitor(config: Replacements<'_>) {
   let ctx = ClipboardContext::new().expect("Failed to acquire clipboard");
   let handler = Handler { ctx, config };
-  let _ = Master::new(handler).run();
+  let _master = Master::new(handler).run();
 }
