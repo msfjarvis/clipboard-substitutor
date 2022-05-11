@@ -26,7 +26,7 @@ impl<'a> ClipboardHandler for Handler<'a> {
         }
         let result = subst.action.apply_action(&contents);
         if let Err(e) = self.ctx.set_contents(result) {
-          error!("{e}");
+          error!("{}", e);
         }
       };
     }
