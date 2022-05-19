@@ -1,15 +1,6 @@
 with import <nixpkgs> { overlays = [ (import <rust-overlay>) ]; };
 mkShell {
-  buildInputs = [
-    (rust-bin.stable.latest.default.override {
-      extensions = [ "rust-src" "rustfmt-preview" ];
-      targets =
-        pkgs.lib.optionals pkgs.stdenv.isDarwin [ "aarch64-apple-darwin" ]
-        ++ pkgs.lib.optionals pkgs.stdenv.isLinux
-        [ "x86_64-unknown-linux-gnu" ];
-    })
-    xorg.libxcb
-    python39
-  ] ++ pkgs.lib.optionals stdenv.isDarwin
+  buildInputs = [ cargo python39 rustc xorg.libxcb ]
+    ++ pkgs.lib.optionals stdenv.isDarwin
     [ pkgs.darwin.apple_sdk.frameworks.AppKit ];
 }
