@@ -22,7 +22,7 @@ impl<'a> ClipboardHandler for Handler<'a> {
         .find(|subst| subst.matcher.check_match(&contents))
       {
         if subst.name.is_empty().not() {
-          debug!("{}: matched on {}...", &subst.name, truncate(&contents, 40));
+          debug!(?subst.name, ?contents);
         }
         let result = subst.action.apply_action(&contents);
         if let Err(e) = self.ctx.set_contents(result) {
@@ -36,13 +36,6 @@ impl<'a> ClipboardHandler for Handler<'a> {
   fn on_clipboard_error(&mut self, error: io::Error) -> CallbackResult {
     error!("Error: {}", error);
     CallbackResult::Next
-  }
-}
-
-fn truncate(s: &str, max_chars: usize) -> &str {
-  match s.char_indices().nth(max_chars) {
-    None => s,
-    Some((idx, _)) => &s[..idx],
   }
 }
 
