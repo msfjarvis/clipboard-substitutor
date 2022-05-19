@@ -70,9 +70,9 @@ fn configure_tracing() {
 fn get_config_path() -> Result<PathBuf> {
   let mut config_path =
     config_dir().ok_or_else(|| anyhow!("Failed to get config dir"))?;
-  debug!("Config directory: {}", config_path.to_string_lossy());
   config_path.push("substitutor");
   config_path.push("config");
   config_path.set_extension("toml");
+  debug!("Config file: {}", config_path.to_string_lossy());
   Ok(config_path)
 }
