@@ -96,11 +96,11 @@ impl Match for MatcherType<'_> {
 
 impl Act for Action<'_> {
   fn apply_action(&self, input: &str) -> String {
-    return match self {
+    match self {
       Action::Replace { from, to } => input.replace(from, to),
       Action::Prefix { prefix } => format!("{}{}", prefix, input),
       Action::Suffix { suffix } => format!("{}{}", input, suffix),
       Action::Set { content } => content.to_owned().to_owned(),
-    };
+    }
   }
 }
