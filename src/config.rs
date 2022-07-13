@@ -2,6 +2,7 @@ use std::str::FromStr;
 
 use regex::Regex;
 use serde_derive::Deserialize;
+use tracing::trace;
 
 #[derive(Debug, Deserialize)]
 pub struct Replacements<'config> {
@@ -67,6 +68,7 @@ pub trait Act {
 
 impl Match for Matcher<'_> {
   fn check_match(&self, string: &str) -> bool {
+    trace!(?self, ?string, "Checking for match");
     match self {
       Matcher::StartsWith { prefix } => string.starts_with(prefix),
       Matcher::EndsWith { suffix } => string.ends_with(suffix),
@@ -96,6 +98,7 @@ impl Match for MatcherType<'_> {
 
 impl Act for Action<'_> {
   fn apply_action(&self, input: &str) -> String {
+    trace!(?self, ?input, "Applying action");
     match self {
       Action::Replace { from, to } => input.replace(from, to),
       Action::Prefix { prefix } => format!("{}{}", prefix, input),
