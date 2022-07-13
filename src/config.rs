@@ -69,25 +69,21 @@ pub trait Act {
 
 impl Replacements<'_> {
   pub fn validate(&self) -> Result<()> {
-    for subst in self.substitutors.iter() {
+    for subst in &self.substitutors {
       match &subst.matcher {
-        MatcherType::Single(matcher) => match matcher {
-          Matcher::Regex { pattern } => {
+        MatcherType::Single(matcher) => {
+          if let Matcher::Regex { pattern } = matcher {
             if let Err(e) = Regex::from_str(pattern) {
               bail!(e);
             }
           }
-          _ => {}
-        },
+        }
         MatcherType::Multiple(matchers) => {
           for matcher in matchers.iter() {
-            match matcher {
-              Matcher::Regex { pattern } => {
-                if let Err(e) = Regex::from_str(pattern) {
-                  bail!(e);
-                }
+            if let Matcher::Regex { pattern } = matcher {
+              if let Err(e) = Regex::from_str(pattern) {
+                bail!(e);
               }
-              _ => {}
             }
           }
         }
