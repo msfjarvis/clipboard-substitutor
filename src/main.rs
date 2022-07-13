@@ -1,11 +1,12 @@
 mod clipboard;
 mod config;
+mod logging;
 #[cfg(test)]
 mod test;
 
 use std::path::PathBuf;
 
-use anyhow::{anyhow, Result};
+use anyhow::{anyhow, bail, Result};
 use dirs::config_dir;
 use tracing::debug;
 
@@ -16,7 +17,9 @@ fn main() -> Result<()> {
   if check_for_version_arg() {
     return Ok(());
   }
-  configure_tracing();
+  if let Err(e) = logging::init() {
+    bail!(e)
+  };
   let config_path = get_config_path()?;
   let config_str =
     std::fs::read_to_string(config_path.as_path()).unwrap_or_default();
@@ -40,31 +43,6 @@ fn print_version() {
     "{}",
     concat!(env!("CARGO_PKG_NAME"), " ", env!("CARGO_PKG_VERSION"))
   );
-}
-
-#[cfg(not(feature = "journald"))]
-fn configure_tracing() {
-  use tracing::Level;
-  use tracing_subscriber::FmtSubscriber;
-
-  let subscriber = FmtSubscriber::builder()
-    .with_max_level(Level::TRACE)
-    .finish();
-
-  tracing::subscriber::set_global_default(subscriber)
-    .expect("setting default subscriber failed");
-}
-
-#[cfg(feature = "journald")]
-fn configure_tracing() {
-  use tracing_journald::Layer;
-  use tracing_subscriber::layer::SubscriberExt;
-  use tracing_subscriber::Registry;
-
-  let subscriber =
-    Registry::default().with(Layer::new().unwrap().with_field_prefix(None));
-  tracing::subscriber::set_global_default(subscriber)
-    .expect("setting default subscriber failed");
 }
 
 fn get_config_path() -> Result<PathBuf> {
