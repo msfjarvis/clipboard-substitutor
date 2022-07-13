@@ -1,5 +1,6 @@
 use std::str::FromStr;
 
+use anyhow::{bail, Result};
 use regex::Regex;
 use serde_derive::Deserialize;
 use tracing::trace;
@@ -64,6 +65,36 @@ pub trait Match {
 
 pub trait Act {
   fn apply_action(&self, input: &str) -> String;
+}
+
+impl Replacements<'_> {
+  pub fn validate(&self) -> Result<()> {
+    for subst in self.substitutors.iter() {
+      match &subst.matcher {
+        MatcherType::Single(matcher) => match matcher {
+          Matcher::Regex { pattern } => {
+            if let Err(e) = Regex::from_str(pattern) {
+              bail!(e);
+            }
+          }
+          _ => {}
+        },
+        MatcherType::Multiple(matchers) => {
+          for matcher in matchers.iter() {
+            match matcher {
+              Matcher::Regex { pattern } => {
+                if let Err(e) = Regex::from_str(pattern) {
+                  bail!(e);
+                }
+              }
+              _ => {}
+            }
+          }
+        }
+      }
+    }
+    Ok(())
+  }
 }
 
 impl Match for Matcher<'_> {

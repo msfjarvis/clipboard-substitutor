@@ -72,3 +72,27 @@ fn parse_with_single_matcher() {
   assert!(matches!(subst.matcher, MatcherType::Single(_)));
   assert!(matches!(subst.action, Action::Prefix { .. }));
 }
+
+#[assay]
+fn config_validation_success() {
+  let config = r#"
+[[substitutor]]
+name = "vxTwitter"
+matcher = { regex = { pattern = "^https://(?P<host>(?:mobile.)?twitter.com)/.*/status/[0-9]+.*" } }
+action = { replace = { from = "twitter.com", to = "vxtwitter.com" } }
+  "#;
+  let config: Replacements<'_> = toml::from_str(config)?;
+  assert!(matches!(config.validate(), Ok(_)));
+}
+
+#[assay]
+fn config_validation_failure() {
+  let config = r#"
+[[substitutor]]
+name = "vxTwitter"
+matcher = { regex = { pattern = "^https://(?P<>(?:mobile.)?twitter.com)/.*/status/[0-9]+.*" } }
+action = { replace = { from = "twitter.com", to = "vxtwitter.com" } }
+  "#;
+  let config: Replacements<'_> = toml::from_str(config)?;
+  assert!(matches!(config.validate(), Err(_)));
+}
