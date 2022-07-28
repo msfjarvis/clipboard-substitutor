@@ -7,6 +7,7 @@ description = "CLI tool to monitor clipboard changes and perform operations base
 repository = "https://github.com/msfjarvis/clipboard-substitutor"
 homepage = "https://github.com/msfjarvis/clipboard-substitutor"
 license = "MIT/Apache-2.0"
+publish = false
 keywords = []
 readme = "README.md"
 include = ["src/**/*", "LICENSE-*", "README.md"]
