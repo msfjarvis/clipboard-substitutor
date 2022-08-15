@@ -1,6 +1,6 @@
 [package]
 name = "clipboard-substitutor"
-version = "0.7.2"
+version = "0.7.3-alpha.0"
 authors = ["Harsh Shandilya <me@msfjarvis.dev>"]
 edition = "2021"
 description = "CLI tool to monitor clipboard changes and perform operations based on the contents"
