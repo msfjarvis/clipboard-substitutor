@@ -31,6 +31,7 @@ default = "deny"
 confidence-threshold = 0.8
 exceptions = [
   { allow = ["BSL-1.0"], name = "lazy-bytes-cast", version = ">=5.0.1" },
+  { allow = ["Unicode-DFS-2016"], name = "unicode-ident", version = "*" },
 ]
 
 [licenses.private]
