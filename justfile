@@ -8,20 +8,35 @@ alias t := test
 set positional-arguments := true
 set dotenv-load := true
 
-build type="":
-    cargo build {{ type }}
+_default:
+    just --list
 
-check type="":
-    cargo check {{ type }}
+build *args:
+    cargo build {{ args }}
 
-clippy flags="":
-    cargo clippy -- {{ flags }}
+check *args:
+    cargo check {{ args }}
+
+clippy *args:
+    cargo clippy {{ args }}
 
 fmt:
     cargo fmt
 
+log:
+    journalctl --user -xeu clipboard-substitutor.service
+
 run type="":
     cargo run {{ type }}
 
-test:
-    cargo nextest run
+start:
+    systemctl --user start clipboard-substitutor.service
+
+status:
+    systemctl --user status clipboard-substitutor.service
+
+stop:
+    systemctl --user stop clipboard-substitutor.service
+
+test *args:
+    cargo nextest run {{ args }}
