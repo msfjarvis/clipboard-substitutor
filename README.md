@@ -1,6 +1,6 @@
-# clipboard-substitutor
+# clipboard-substitutor [![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 
-WIP tool that runs a busy loop to read your clipboard contents, match it against a set of configurable patterns, and perform a specified operation against it.
+Simple CLI tool that runs a busy loop to read your clipboard contents, match it against a set of configurable patterns, and perform a specified operation against it.
 
 ## Licensing
 
