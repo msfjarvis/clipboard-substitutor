@@ -94,7 +94,7 @@ impl Match for Matcher {
           false
         }
       }
-      Matcher::Exactly { content } => &string == content,
+      Matcher::Exactly { content } => string == content,
     }
   }
 }
@@ -117,7 +117,7 @@ impl Act for Action {
       Action::Replace { from, to } => input.replace(from, to),
       Action::Prefix { prefix } => format!("{}{}", prefix, input),
       Action::Suffix { suffix } => format!("{}{}", input, suffix),
-      Action::Set { content } => content.to_owned(),
+      Action::Set { content } => content.clone(),
     }
   }
 }
