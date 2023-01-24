@@ -28,31 +28,21 @@ pub enum MatcherType {
 }
 
 #[derive(Debug, Deserialize)]
+#[serde(rename_all = "snake_case")]
 pub enum Matcher {
-  #[serde(rename = "starts_with")]
   StartsWith { prefix: String },
-  #[serde(rename = "ends_with")]
   EndsWith { suffix: String },
-  #[serde(rename = "contains")]
   Contains { substring: String },
-  #[serde(rename = "regex")]
   Regex { pattern: String },
-  #[serde(rename = "exactly")]
   Exactly { content: String },
 }
 
 #[derive(Debug, Deserialize)]
+#[serde(rename_all = "lowercase")]
 pub enum Action {
-  #[serde(rename = "set")]
   Set { content: String },
-  #[serde(rename = "replace")]
-  Replace {
-    from: String,
-    to: String,
-  },
-  #[serde(rename = "prefix")]
+  Replace { from: String, to: String },
   Prefix { prefix: String },
-  #[serde(rename = "suffix")]
   Suffix { suffix: String },
 }
 
