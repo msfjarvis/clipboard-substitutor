@@ -7,12 +7,12 @@ use tracing::{debug, error};
 
 use crate::config::{Act, Match, Replacements};
 
-struct Handler<'a> {
+struct Handler {
   ctx: ClipboardContext,
-  config: Replacements<'a>,
+  config: Replacements,
 }
 
-impl<'a> ClipboardHandler for Handler<'a> {
+impl ClipboardHandler for Handler {
   fn on_clipboard_change(&mut self) -> CallbackResult {
     if let Ok(contents) = self.ctx.get_contents() {
       if let Some(subst) = self
@@ -39,7 +39,7 @@ impl<'a> ClipboardHandler for Handler<'a> {
   }
 }
 
-pub fn monitor(config: Replacements<'_>) {
+pub fn monitor(config: Replacements) {
   let ctx = ClipboardContext::new().expect("Failed to acquire clipboard");
   let handler = Handler { ctx, config };
   let _master = Master::new(handler).run();

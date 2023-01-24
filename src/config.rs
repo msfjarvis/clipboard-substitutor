@@ -6,57 +6,54 @@ use serde_derive::Deserialize;
 use tracing::trace;
 
 #[derive(Debug, Deserialize)]
-pub struct Replacements<'config> {
-  #[serde(rename = "substitutor", borrow, default)]
-  pub substitutors: Vec<Substitutor<'config>>,
+pub struct Replacements {
+  #[serde(rename = "substitutor", default)]
+  pub substitutors: Vec<Substitutor>,
 }
 
 #[derive(Debug, Deserialize)]
-pub struct Substitutor<'config> {
+pub struct Substitutor {
   #[serde(default)]
-  pub name: &'config str,
-  #[serde(borrow, alias = "matcher")]
-  pub matcher: MatcherType<'config>,
-  #[serde(borrow)]
-  pub action: Action<'config>,
+  pub name: String,
+  #[serde(alias = "matcher")]
+  pub matcher: MatcherType,
+  pub action: Action,
 }
 
 #[derive(Debug, Deserialize)]
 #[serde(untagged)]
-pub enum MatcherType<'config> {
-  #[serde(borrow)]
-  Single(Matcher<'config>),
-  #[serde(borrow)]
-  Multiple(Vec<Matcher<'config>>),
+pub enum MatcherType {
+  Single(Matcher),
+  Multiple(Vec<Matcher>),
 }
 
 #[derive(Debug, Deserialize)]
-pub enum Matcher<'config> {
+pub enum Matcher {
   #[serde(rename = "starts_with")]
-  StartsWith { prefix: &'config str },
+  StartsWith { prefix: String },
   #[serde(rename = "ends_with")]
-  EndsWith { suffix: &'config str },
+  EndsWith { suffix: String },
   #[serde(rename = "contains")]
-  Contains { substring: &'config str },
+  Contains { substring: String },
   #[serde(rename = "regex")]
-  Regex { pattern: &'config str },
+  Regex { pattern: String },
   #[serde(rename = "exactly")]
-  Exactly { content: &'config str },
+  Exactly { content: String },
 }
 
 #[derive(Debug, Deserialize)]
-pub enum Action<'config> {
+pub enum Action {
   #[serde(rename = "set")]
-  Set { content: &'config str },
+  Set { content: String },
   #[serde(rename = "replace")]
   Replace {
-    from: &'config str,
-    to: &'config str,
+    from: String,
+    to: String,
   },
   #[serde(rename = "prefix")]
-  Prefix { prefix: &'config str },
+  Prefix { prefix: String },
   #[serde(rename = "suffix")]
-  Suffix { suffix: &'config str },
+  Suffix { suffix: String },
 }
 
 pub trait Match {
@@ -67,7 +64,7 @@ pub trait Act {
   fn apply_action(&self, input: &str) -> String;
 }
 
-impl Replacements<'_> {
+impl Replacements {
   pub fn validate(&self) -> Result<()> {
     for subst in &self.substitutors {
       match &subst.matcher {
@@ -93,7 +90,7 @@ impl Replacements<'_> {
   }
 }
 
-impl Match for Matcher<'_> {
+impl Match for Matcher {
   fn check_match(&self, string: &str) -> bool {
     trace!(?self, ?string, "Checking for match");
     match self {
@@ -112,7 +109,7 @@ impl Match for Matcher<'_> {
   }
 }
 
-impl Match for MatcherType<'_> {
+impl Match for MatcherType {
   fn check_match(&self, string: &str) -> bool {
     match self {
       MatcherType::Single(matcher) => matcher.check_match(string),
@@ -123,14 +120,14 @@ impl Match for MatcherType<'_> {
   }
 }
 
-impl Act for Action<'_> {
+impl Act for Action {
   fn apply_action(&self, input: &str) -> String {
     trace!(?self, ?input, "Applying action");
     match self {
       Action::Replace { from, to } => input.replace(from, to),
       Action::Prefix { prefix } => format!("{}{}", prefix, input),
       Action::Suffix { suffix } => format!("{}{}", input, suffix),
-      Action::Set { content } => content.to_owned().to_owned(),
+      Action::Set { content } => content.to_owned(),
     }
   }
 }
