@@ -53,29 +53,31 @@
       rustStable =
         pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
       craneLib = (crane.mkLib pkgs).overrideToolchain rustStable;
-      src = ./.;
-      buildInputs = with pkgs;
-        [xorg.libxcb python39]
-        ++ pkgs.lib.optionals stdenv.isDarwin
-        [pkgs.darwin.apple_sdk.frameworks.AppKit];
-      cargoArtifacts = craneLib.buildDepsOnly {inherit src buildInputs;};
-
-      clipboard-substitutor = craneLib.buildPackage {
-        inherit src buildInputs;
-        doCheck = false;
-      };
-      clipboard-substitutor-clippy = craneLib.cargoClippy {
-        inherit cargoArtifacts src buildInputs;
+      commonArgs = {
+        src = craneLib.cleanCargoSource ./.;
+        buildInputs = with pkgs;
+          [xorg.libxcb python39]
+          ++ pkgs.lib.optionals stdenv.isDarwin
+          [pkgs.darwin.apple_sdk.frameworks.AppKit];
+        nativeBuildInputs = [];
         cargoClippyExtraArgs = "--all-targets -- --deny warnings";
       };
-      clipboard-substitutor-fmt = craneLib.cargoFmt {inherit src;};
-      clipboard-substitutor-audit =
-        craneLib.cargoAudit {inherit src advisory-db;};
-      clipboard-substitutor-nextest = craneLib.cargoNextest {
-        inherit cargoArtifacts src buildInputs;
-        partitions = 1;
-        partitionType = "count";
-      };
+      cargoArtifacts = craneLib.buildDepsOnly (commonArgs // {doCheck = false;});
+
+      clipboard-substitutor = craneLib.buildPackage (commonArgs // {doCheck = false;});
+      clipboard-substitutor-clippy = craneLib.cargoClippy (commonArgs
+        // {
+          inherit cargoArtifacts;
+        });
+      clipboard-substitutor-fmt = craneLib.cargoFmt (commonArgs // {});
+      clipboard-substitutor-audit = craneLib.cargoAudit (commonArgs // {inherit advisory-db;});
+      clipboard-substitutor-nextest = craneLib.cargoNextest (commonArgs
+        // {
+          inherit cargoArtifacts;
+          src = ./.;
+          partitions = 1;
+          partitionType = "count";
+        });
     in {
       checks = {
         # TODO: migrate to cargo-audit
