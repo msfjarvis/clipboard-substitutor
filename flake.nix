@@ -80,14 +80,7 @@
         });
     in {
       checks = {
-        # TODO: migrate to cargo-audit
-        # clipboard-substitutor-audit
-        inherit
-          clipboard-substitutor
-          clipboard-substitutor-clippy
-          clipboard-substitutor-fmt
-          clipboard-substitutor-nextest
-          ;
+        inherit clipboard-substitutor clipboard-substitutor-audit clipboard-substitutor-clippy clipboard-substitutor-fmt clipboard-substitutor-nextest;
       };
 
       packages.default = clipboard-substitutor;
