@@ -1,3 +1,4 @@
-5d6b27249d981d1474ead681e6fdfc27958aa96e # Reformat with custom rustfmt config
+# Reformat with custom rustfmt config
+5d6b27249d981d1474ead681e6fdfc27958aa96e
 # Reformat Nix files with Alejandra
 8f0408e6c969f446054c571689d08e8fa41c4a62
