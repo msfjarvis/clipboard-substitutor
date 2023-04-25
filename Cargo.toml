@@ -22,7 +22,7 @@ regex = "1.8.1"
 serde = "1.0.160"
 serde_derive = "1.0.160"
 toml = "0.7.3"
-tracing = "0.1.37"
+tracing = "0.1.38"
 tracing-journald = { version = "0.3.0", optional = true }
 tracing-subscriber = { version = "0.3.17", features = ["env-filter"] }
 
