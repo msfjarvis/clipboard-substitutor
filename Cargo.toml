@@ -18,7 +18,7 @@ argv = "0.1.8"
 clipboard-master = "3.1.3"
 copypasta = { version = "0.8.2", default-features = false, features = ["x11"] }
 dirs = "5.0.1"
-regex = "1.8.3"
+regex = "1.8.4"
 serde = "1.0.163"
 serde_derive = "1.0.163"
 toml = "0.7.4"
