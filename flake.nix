@@ -51,7 +51,7 @@
       commonArgs = {
         src = craneLib.cleanCargoSource ./.;
         buildInputs = with pkgs;
-          [xorg.libxcb python39]
+          [xorg.libxcb python312]
           ++ pkgs.lib.optionals stdenv.isDarwin
           [pkgs.darwin.apple_sdk.frameworks.AppKit];
         nativeBuildInputs = [];
