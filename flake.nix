@@ -69,7 +69,6 @@
       clipboard-substitutor-nextest = craneLib.cargoNextest (commonArgs
         // {
           inherit cargoArtifacts;
-          src = ./.;
           partitions = 1;
           partitionType = "count";
         });
