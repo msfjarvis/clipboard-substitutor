@@ -50,11 +50,11 @@
       craneLib = (crane.mkLib pkgs).overrideToolchain rustStable;
       commonArgs = {
         src = craneLib.cleanCargoSource ./.;
-        buildInputs = with pkgs;
+        buildInputs = [];
+        nativeBuildInputs = with pkgs;
           [xorg.libxcb python312]
           ++ pkgs.lib.optionals stdenv.isDarwin
           [pkgs.darwin.apple_sdk.frameworks.AppKit];
-        nativeBuildInputs = [];
         cargoClippyExtraArgs = "--all-targets -- --deny warnings";
       };
       cargoArtifacts = craneLib.buildDepsOnly (commonArgs // {doCheck = false;});
@@ -101,7 +101,7 @@
           rustStable
         ];
 
-        language.c.libraries = commonArgs.buildInputs;
+        language.c.libraries = commonArgs.nativeBuildInputs;
         language.rust.enableDefaultToolchain = false;
       };
     });
