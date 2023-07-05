@@ -21,7 +21,7 @@ dirs = "5.0.1"
 regex = "1.9.0"
 serde = "1.0.166"
 serde_derive = "1.0.166"
-toml = "0.7.5"
+toml = "0.7.6"
 tracing = "0.1.37"
 tracing-journald = { version = "0.3.0", optional = true }
 tracing-subscriber = { version = "0.3.17", features = ["env-filter"] }
