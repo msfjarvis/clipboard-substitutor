@@ -88,7 +88,7 @@ matcher = { regex = { pattern = "^https://(?P<host>(?:mobile.)?twitter.com)/.*/s
 action = { replace = { from = "twitter.com", to = "vxtwitter.com" } }
   "#;
   let config: Replacements = toml::from_str(config)?;
-  assert!(matches!(config.validate(), Ok(_)));
+  assert!(config.validate().is_ok());
 }
 
 #[assay]
@@ -100,5 +100,5 @@ matcher = { regex = { pattern = "^https://(?P<>(?:mobile.)?twitter.com)/.*/statu
 action = { replace = { from = "twitter.com", to = "vxtwitter.com" } }
   "#;
   let config: Replacements = toml::from_str(config)?;
-  assert!(matches!(config.validate(), Err(_)));
+  assert!(config.validate().is_err());
 }

@@ -66,7 +66,7 @@ impl Replacements {
           }
         }
         MatcherType::Multiple(matchers) => {
-          for matcher in matchers.iter() {
+          for matcher in matchers {
             if let Matcher::Regex { pattern } = matcher {
               if let Err(e) = Regex::from_str(pattern) {
                 bail!(e);
@@ -115,8 +115,8 @@ impl Act for Action {
     trace!(?self, ?input, "Applying action");
     match self {
       Action::Replace { from, to } => input.replace(from, to),
-      Action::Prefix { prefix } => format!("{}{}", prefix, input),
-      Action::Suffix { suffix } => format!("{}{}", input, suffix),
+      Action::Prefix { prefix } => format!("{prefix}{input}"),
+      Action::Suffix { suffix } => format!("{input}{suffix}"),
       Action::Set { content } => content.clone(),
     }
   }
