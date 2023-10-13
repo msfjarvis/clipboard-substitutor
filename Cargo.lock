@@ -160,9 +160,9 @@ dependencies = [
 
 [[package]]
 name = "copypasta"
-version = "0.9.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1117930cbaa5a8a559ae524180d90f1b837975a15fece4adab035e71102e29af"
+checksum = "6d35364349bf9e9e1c3a035ddcb00d188d23a3c40c50244c03c27a99fc6a65ae"
 dependencies = [
  "clipboard-win",
  "objc",
