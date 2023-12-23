@@ -1,6 +1,7 @@
 use crate::config::{Act, Match, Replacements};
 use anyhow::Result;
 use copypasta::{ClipboardContext, ClipboardProvider};
+use std::time::Duration;
 use tracing::{debug, error};
 
 pub fn monitor(config: Replacements) -> Result<()> {
@@ -22,5 +23,6 @@ pub fn monitor(config: Replacements) -> Result<()> {
         }
       };
     }
+    std::thread::sleep(Duration::from_millis(1_000));
   }
 }
