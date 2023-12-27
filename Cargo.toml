@@ -13,7 +13,7 @@ readme = "README.md"
 include = ["src/**/*", "LICENSE-*", "README.md"]
 
 [dependencies]
-anyhow = "1.0.76"
+anyhow = "1.0.77"
 argv = "0.1.10"
 copypasta = { version = "0.10.0", default-features = false, features = ["x11"] }
 dirs = "5.0.1"
