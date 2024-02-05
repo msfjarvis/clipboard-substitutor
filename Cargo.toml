@@ -15,7 +15,7 @@ include = ["src/**/*", "LICENSE-*", "README.md"]
 [dependencies]
 anyhow = "1.0.79"
 argv = "0.1.11"
-copypasta = { version = "0.10.0", default-features = false, features = ["x11"] }
+copypasta = { version = "0.10.1", default-features = false, features = ["x11"] }
 dirs = "5.0.1"
 regex = "1.10.3"
 serde = "1.0.196"
