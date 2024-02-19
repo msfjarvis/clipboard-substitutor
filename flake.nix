@@ -72,7 +72,9 @@
         });
     in {
       checks = {
-        inherit clipboard-substitutor clipboard-substitutor-audit clipboard-substitutor-clippy clipboard-substitutor-fmt clipboard-substitutor-nextest;
+        inherit clipboard-substitutor clipboard-substitutor-clippy clipboard-substitutor-fmt clipboard-substitutor-nextest;
+        # TODO: Re-enable once https://github.com/NixOS/nixpkgs/issues/288064 is fixed
+        # inherit clipboard-substitutor-audit;
       };
 
       packages.default = clipboard-substitutor;
