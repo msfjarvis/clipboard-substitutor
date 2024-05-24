@@ -4,7 +4,7 @@ use copypasta::{ClipboardContext, ClipboardProvider};
 use std::time::Duration;
 use tracing::{debug, error};
 
-pub fn monitor(config: Replacements) -> Result<()> {
+pub fn monitor(config: &Replacements) -> Result<()> {
   loop {
     let mut clipboard =
       ClipboardContext::new().expect("Failed to get clipboard");

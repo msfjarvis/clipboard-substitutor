@@ -25,7 +25,7 @@ fn main() -> Result<()> {
     std::fs::read_to_string(config_path.as_path()).unwrap_or_default();
   let config: Replacements = toml::from_str(&config_str)?;
   config.validate()?;
-  monitor(config)
+  monitor(&config)
 }
 
 fn check_for_version_arg() -> bool {
