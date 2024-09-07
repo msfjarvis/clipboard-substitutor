@@ -7,7 +7,6 @@ description = "CLI tool to monitor clipboard changes and perform operations base
 repository = "https://github.com/msfjarvis/clipboard-substitutor"
 homepage = "https://github.com/msfjarvis/clipboard-substitutor"
 license = "MIT/Apache-2.0"
-publish = false
 keywords = []
 readme = "README.md"
 include = ["src/**/*", "LICENSE-*", "README.md"]
@@ -30,3 +29,23 @@ assay = "0.1.1"
 
 [features]
 journald = ["tracing-journald"]
+
+# The profile that 'cargo dist' will build with
+[profile.dist]
+inherits = "release"
+lto = "thin"
+
+# Config for 'cargo dist'
+[workspace.metadata.dist]
+# The preferred cargo-dist version to use in CI (Cargo.toml SemVer syntax)
+cargo-dist-version = "0.21.1"
+# CI backends to support
+ci = "github"
+# The installers to generate for each app
+installers = ["shell"]
+# Target platforms to build apps for (Rust target-triple syntax)
+targets = ["x86_64-unknown-linux-gnu"]
+# Path that installers should place binaries in
+install-path = "CARGO_HOME"
+# Whether to install an updater program
+install-updater = false
