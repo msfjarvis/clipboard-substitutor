@@ -6,7 +6,7 @@ mod test;
 
 use std::path::PathBuf;
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{Result, anyhow, bail};
 use dirs::config_dir;
 use tracing::debug;
 

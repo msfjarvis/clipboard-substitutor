@@ -1,12 +1,12 @@
+use tracing::Level;
 use tracing::dispatcher::SetGlobalDefaultError;
 use tracing::subscriber::set_global_default;
-use tracing::Level;
 use tracing_subscriber::filter::Targets;
 
 #[cfg(not(feature = "journald"))]
 fn configure_tracing(filter: Targets) -> Result<(), SetGlobalDefaultError> {
   use tracing_subscriber::layer::SubscriberExt;
-  use tracing_subscriber::{fmt, Layer};
+  use tracing_subscriber::{Layer, fmt};
 
   let stdout_log = fmt::layer().pretty();
   let subscriber =
