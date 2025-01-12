@@ -15,7 +15,7 @@ include = ["src/**/*", "LICENSE-*", "README.md"]
 anyhow = "1.0.82"
 argv = "0.1.11"
 copypasta = { version = "0.10.1", default-features = false, features = ["x11"] }
-dirs = "5.0.1"
+dirs = "6.0.0"
 regex = "1.10.4"
 serde = "1.0.200"
 serde_derive = "1.0.200"
