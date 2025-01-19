@@ -4,3 +4,5 @@
 8f0408e6c969f446054c571689d08e8fa41c4a62
 # Reformatting Nix files with nixfmt-rfc-style
 b52dea88b0c1a84328c60604c32f711fb1d74e01
+# Revert use of custom rustfmt config
+6048f7a5379b7c2ca469818e0600e9ab90d893f8
