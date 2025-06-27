@@ -19,7 +19,7 @@ fn main() -> Result<()> {
     }
     if let Err(e) = logging::init() {
         bail!(e)
-    };
+    }
     let config_path = get_config_path()?;
     let config_str = std::fs::read_to_string(config_path.as_path()).unwrap_or_default();
     let config: Replacements = toml::from_str(&config_str)?;
