@@ -50,13 +50,10 @@
         commonArgs = {
           src = craneLib.cleanCargoSource ./.;
           buildInputs = [ ];
-          nativeBuildInputs =
-            with pkgs;
-            [
-              xorg.libxcb
-              python312
-            ]
-            ++ pkgs.lib.optionals stdenv.isDarwin [ pkgs.darwin.apple_sdk.frameworks.AppKit ];
+          nativeBuildInputs = with pkgs; [
+            xorg.libxcb
+            python312
+          ];
           cargoClippyExtraArgs = "--all-targets -- --deny warnings";
         };
         cargoArtifacts = craneLib.buildDepsOnly (commonArgs // { doCheck = false; });
