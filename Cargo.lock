@@ -19,9 +19,9 @@ checksum = "330a5ed07fa54e4702c9d6c4174f74427fc0ef6e214bbd677ae50a5099946470"
 
 [[package]]
 name = "argv"
-version = "0.1.13"
+version = "0.1.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e49015e9bcf19ab770c44d0b084814c444d6f90a3a0bff1c9d670971e47de3ea"
+checksum = "f3e24f8dc0459339c238d92d26c467df5562301640657f57c5c7b4708d6539ce"
 
 [[package]]
 name = "assay"
